@@ -8,12 +8,17 @@
     <title>Image tranlator</title>
   </head>
   <body>
-    <label for="image">Choose a profile picture:</label>
-    <input
-      type="file"
-      id="image"
-      name="image"
-      accept="image/png, image/jpeg"
-    />
+    <form method="post">
+      <label for="image">Choose a profile picture:</label>
+      <input
+        type="file"
+        id="image"
+        name="image"
+        accept="image/png, image/jpeg"
+      />
+      <input id="translate-btn" type="submit" value="Translate" />
+    </form>
+    <div id="result"></div>
+    <script src="script.js"></script>
   </body>
 </html>
