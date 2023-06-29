@@ -10,7 +10,7 @@ translateBtn.addEventListener('click', () => {
   const reader = new FileReader();
   reader.readAsBinaryString(file);
   reader.onload = () => {
-    fetch(`https://image-translator-worker.viviane.workers.dev/gcp/detect-text`, {
+    fetch(`/`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
