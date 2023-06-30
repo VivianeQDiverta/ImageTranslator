@@ -10,12 +10,19 @@ translateBtn.addEventListener('click', () => {
   const reader = new FileReader();
   reader.readAsBinaryString(file);
   reader.onload = () => {
-    fetch(`/`, {
+    fetch(`/translate`, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json',
+        'Content-Type': 'text/html',
       },
       body: JSON.stringify({ binaryImage: btoa(reader.result) }),
-    }).then((res) => res.json());
+    })
+      .then((res) => res.text())
+      .then((text) => {
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(text, 'text/html');
+        document.querySelector('body').innerHTML =
+          doc.querySelector('body').innerHTML;
+      });
   };
 });
