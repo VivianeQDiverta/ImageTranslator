@@ -7,14 +7,16 @@
     <title>Image tranlator</title>
   </head>
   <body>
+    <h1>Image translator</h1>
     <form>
-      <label for="image-file">Choose an image with text:</label>
-      <input
-        type="file"
-        id="image-file"
-        name="image-file"
-        accept="image/*"
-      />
+      <label for="image-file">Image with text:</label>
+      <input type="file" id="image-file" name="image-file" accept="image/*" />
+      <label for="target-lang">Target language:</label>
+      <select name="target-lang" id="target-lang">
+        <option value="en">English</option>
+        <option value="jp">Japanese</option>
+        <option value="fr">French</option>
+      </select>
       <input id="translate-btn" type="button" value="Translate" />
     </form>
     <script src="script.js"></script>

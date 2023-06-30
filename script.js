@@ -1,5 +1,6 @@
 const imageFile = document.querySelector('#image-file');
 const translateBtn = document.querySelector('#translate-btn');
+const targetLang = document.querySelector('#target-lang');
 
 translateBtn.addEventListener('click', () => {
   if (imageFile.files.length === 0) {
@@ -15,7 +16,10 @@ translateBtn.addEventListener('click', () => {
       headers: {
         'Content-Type': 'text/html',
       },
-      body: JSON.stringify({ binaryImage: btoa(reader.result) }),
+      body: JSON.stringify({
+        binaryImage: btoa(reader.result),
+        targetLang: targetLang.value,
+      }),
     })
       .then((res) => res.text())
       .then((text) => {
