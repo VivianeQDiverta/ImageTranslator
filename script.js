@@ -1,8 +1,10 @@
 const imageFile = document.querySelector('#image-file');
 const translateBtn = document.querySelector('#translate-btn');
 const targetLang = document.querySelector('#target-lang');
+const translateBtnSpinner = document.querySelector('#translate-btn-spinner');
 
-translateBtn.addEventListener('click', () => {
+translateBtn.addEventListener('click', (e) => {
+  e.preventDefault();
   if (imageFile.files.length === 0) {
     alert('Please select an image');
     return;
@@ -11,6 +13,12 @@ translateBtn.addEventListener('click', () => {
   const reader = new FileReader();
   reader.readAsBinaryString(file);
   reader.onload = () => {
+    // disable all inputs
+    translateBtnSpinner.classList.remove('d-none');
+    imageFile.disabled = true;
+    targetLang.disabled = true;
+    translateBtn.disabled = true;
+    // send request
     fetch(`/translate`, {
       method: 'POST',
       headers: {
