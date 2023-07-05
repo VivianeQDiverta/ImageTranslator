@@ -19,11 +19,19 @@ translateBtn.addEventListener('click', async (e) => {
   const file = imageFile.files[0];
   const binaryImage = await new Promise((resolve) => {
     const reader = new FileReader();
+    if (file.type !== 'image/svg+xml' && file.type !== 'image/png') {
+      // convert file to binary string
+      reader.readAsBinaryString(file);
+      reader.onloadend = () => {
+        resolve(reader.result);
+      };
+    }
+  
+    // convert images to jpg if svg or png
     const imgObj = new Image();
     imgObj.src = URL.createObjectURL(file);
     imgObj.onload = () => {
       URL.revokeObjectURL(imgObj.src); // free up memory
-      // convert images to jpg for performance and to support svg
       const canvas = document.createElement('canvas');
       ctx = canvas.getContext('2d');
       canvas.width = imgObj.width;
