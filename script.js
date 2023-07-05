@@ -17,13 +17,30 @@ translateBtn.addEventListener('click', async (e) => {
 
   // read file
   const file = imageFile.files[0];
-  const reader = new FileReader();
-  reader.readAsBinaryString(file);
   const binaryImage = await new Promise((resolve) => {
     const reader = new FileReader();
-    reader.readAsBinaryString(file);
-    reader.onloadend = () => {
-      resolve(reader.result);
+    const imgObj = new Image();
+    imgObj.src = URL.createObjectURL(file);
+    imgObj.onload = () => {
+      URL.revokeObjectURL(imgObj.src); // free up memory
+      // convert images to jpg for performance and to support svg
+      const canvas = document.createElement('canvas');
+      ctx = canvas.getContext('2d');
+      canvas.width = imgObj.width;
+      canvas.height = imgObj.height;
+      // fill canvas with white background
+      ctx.fillStyle = '#fff';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      // draw image on top of background
+      ctx.drawImage(imgObj, 0, 0);
+
+      // convert canvas containing converted image to binary string
+      canvas.toBlob((blob) => {
+        reader.readAsBinaryString(blob);
+        reader.onloadend = () => {
+          resolve(reader.result);
+        };
+      }, 'image/jpg');
     };
   });
 
@@ -37,11 +54,12 @@ translateBtn.addEventListener('click', async (e) => {
       binaryImage: btoa(binaryImage),
       targetLang: targetLang.value,
     }),
-  })
+  });
 
   // parse response
   const text = await res.text();
   const parser = new DOMParser();
   const doc = parser.parseFromString(text, 'text/html');
-  document.querySelector('body').innerHTML = doc.querySelector('body').innerHTML;
+  document.querySelector('body').innerHTML =
+    doc.querySelector('body').innerHTML;
 });
