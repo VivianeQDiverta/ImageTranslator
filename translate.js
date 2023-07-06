@@ -3,8 +3,8 @@ const body = document.querySelector('body');
 
 // observe body for childList changes and add listeners if #result is added
 const observer = new MutationObserver(() => {
-  const annotationsContainer = document.getElementById('annotationsContainer');
-  if (document.getElementById('result') === null || !annotationsContainer)
+  const annotationsContainer = document.querySelector('.annotationsContainer');
+  if (!document.getElementById('result') || !annotationsContainer)
     return;
 
   const switchContainer = document.getElementById('switch-container');
