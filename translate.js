@@ -26,7 +26,7 @@ const observer = new MutationObserver(() => {
   });
 });
 
-observer.observe(elementToObserve, { childList: true });
+observer.observe(body, { childList: true });
 
 const toggleAnnotations = async (annotationsContainer, checked) => {
   annotationsContainer.style.display = checked ? 'block' : 'none';
