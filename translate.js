@@ -7,11 +7,7 @@ const observer = new MutationObserver(() => {
   if (!document.getElementById('result') || !annotationsContainer)
     return;
 
-  const switchContainer = document.getElementById('switch-container');
   const showAnnotationsSwitch = document.getElementById('show-annotations');
-
-  // Display switch container
-  switchContainer.style.display = 'block';
 
   // Show or hide annotations depending on switch state
   showAnnotationsSwitch.addEventListener('change', (event) => {
