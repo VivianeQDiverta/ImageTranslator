@@ -1,4 +1,4 @@
-class Nav extends HTMLElement {
+class DefaultNav extends HTMLElement {
   constructor() {
     super();
   }
@@ -6,12 +6,36 @@ class Nav extends HTMLElement {
   connectedCallback() {
     this.innerHTML = `
       <nav class="nav justify-content-center">
-        <a class="nav-link" href="/">Image Translator</a>
-        <a class="nav-link" href="/signup">Sign up</a>
-        <a class="nav-link" href="/signin">Sign in</a>
+        <a id="home" class="nav-link" href="/">Image Translator</a>
+        <a id="signup" class="nav-link" href="/signup">Sign up</a>
+        <a id="signin" class="nav-link" href="/signin">Sign in</a>
       </nav>
     `;
   }
 }
 
-customElements.define('nav-component', Nav);
+class SignedInNav extends HTMLElement {
+  constructor() {
+    super();
+  }
+
+  connectedCallback() {
+    this.innerHTML = `
+      <nav class="nav justify-content-center">
+        <a id="home" class="nav-link" href="/">Image Translator</a>
+        <a id="signout" class="nav-link" href="/">Sign out</a>
+      </nav>
+    `;
+  }
+}
+
+const token = localStorage.getItem('token');
+if (token) {
+  customElements.define('nav-component', SignedInNav);
+  document.getElementById('signout').addEventListener('click', () => {
+    console.log('signout');
+    localStorage.removeItem('token');
+  });
+} else {
+  customElements.define('nav-component', DefaultNav);
+}
