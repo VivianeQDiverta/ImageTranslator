@@ -36,32 +36,31 @@
       <a class="nav-link" href="/signup">Sign up</a>
     </nav>
     <div class="container col-lg-6 my-4">
-      <form class="d-flex flex-column gap-4 m-2 mt-4">
+      <form
+        class="d-flex flex-column gap-4 m-2 mt-4"
+        action="/signup"
+        method="POST"
+      >
         <div>
-          <label for="image-file" class="form-label">Image with text</label>
+          <label for="username" class="form-label">Username</label>
           <input
-            type="file"
-            id="image-file"
-            name="image-file"
-            accept="image/*"
+            type="text"
+            id="username"
+            name="username"
             class="form-control"
           />
         </div>
         <div>
-          <label for="target-lang" class="form-label">Target language</label>
-          <select
-            name="target-lang"
-            id="target-lang"
+          <label for="password" class="form-label">Password</label>
+          <input
+            type="password"
+            id="password"
+            name="password"
             class="form-control"
-          ></select>
+          />
         </div>
-        <button id="translate-btn" class="btn btn-primary">
-          <span
-            id="translate-btn-spinner"
-            class="spinner-border spinner-border-sm d-none"
-            role="status"
-          ></span
-          >Translate
+        <button id="signup-btn" class="btn btn-primary" type="submit">
+          Sign up
         </button>
       </form>
     </div>
@@ -72,6 +71,5 @@
       referrerpolicy="no-referrer"
     ></script>
     <script src="script.js"></script>
-    <script src="translate.js"></script>
   </body>
 </html>
