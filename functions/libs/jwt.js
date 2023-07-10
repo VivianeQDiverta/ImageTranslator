@@ -10,6 +10,8 @@ const sign = async (data, secret) => {
     ['sign']
   );
   const signature = await crypto.subtle.sign('HMAC', key, dataBuffer);
+  console.log(signature);
+  console.log(btoa(signature))
   return btoa(String.fromCharCode(...new Uint8Array(signature)));
 };
 
