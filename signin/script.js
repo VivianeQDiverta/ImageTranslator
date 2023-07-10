@@ -1,15 +1,15 @@
-const signupBtn = document.querySelector('#signup-btn');
+const signinBtn = document.querySelector('#signin-btn');
 const username = document.querySelector('#username');
 const password = document.querySelector('#password');
 
-signupBtn.addEventListener('click', async (e) => {
+signinBtn.addEventListener('click', async (e) => {
   e.preventDefault();
   if (username.value === '' || password.value === '') {
     alert('Please enter an username and a password');
     return;
   }
 
-  const res = await fetch('/signup', {
+  const res = await fetch('/signin', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -23,7 +23,9 @@ signupBtn.addEventListener('click', async (e) => {
   const data = await res.json();
 
   if (data.success) {
-    alert('Signup successful');
+    const token = data.token;
+    localStorage.setItem('token', token);
+    alert('Sign in successful');
     window.location.href = '/';
     return;
   }
