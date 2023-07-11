@@ -24,8 +24,8 @@ export async function onRequestPost(context) {
   const { annotations, binaryImage, targetLang } = body;
   try {
     let imageId = await db
-      .prepare('SELECT id FROM images WHERE data = ?')
-      .bind(binaryImage)
+      .prepare('SELECT id FROM images WHERE data = ? AND userId = ?')
+      .bind(binaryImage, user.id)
       .first('id');
     if (!imageId) {
       // insert new image
