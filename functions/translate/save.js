@@ -26,15 +26,41 @@ export async function onRequestPost(context) {
   const body = await context.request.json();
   const { annotations, binaryImage, targetLang } = body;
   try {
-    const image = await db
-      .prepare('INSERT INTO images (data, userId) VALUES (?, ?)')
-      .bind(binaryImage, user.id)
-      .run();
-    const translation = await db
-      .prepare('INSERT INTO translations (imageId, targetLang) VALUES (?, ?)')
-      .bind(image.meta.last_row_id, targetLang)
-      .run();
+    let imageId = await db
+      .prepare('SELECT id FROM images WHERE data = ?')
+      .bind(binaryImage)
+      .first('id');
+    if (!imageId) {
+      // insert new image
+      const res = await db
+        .prepare('INSERT INTO images (data, userId) VALUES (?, ?)')
+        .bind(binaryImage, user.id)
+        .run();
+      imageId = res.meta.last_row_id;
+    }
 
+    let translationId = await db
+      .prepare(
+        'SELECT id FROM translations WHERE imageId = ? AND targetLang = ?'
+      )
+      .bind(imageId, targetLang)
+      .first('id');
+    if (translationId) {
+      // delete old annotations
+      await db
+        .prepare('DELETE FROM annotations WHERE translationId = ?')
+        .bind(translationId)
+        .run();
+    } else {
+      // insert new translation
+      const res = await db
+        .prepare('INSERT INTO translations (imageId, targetLang) VALUES (?, ?)')
+        .bind(imageId, targetLang)
+        .run();
+      translationId = res.meta.last_row_id;
+    }
+
+    // insert new annotations
     const annotationsPromises = annotations.map((annotation) =>
       db
         .prepare(
@@ -45,7 +71,7 @@ export async function onRequestPost(context) {
           annotation.x,
           annotation.y,
           annotation.fontSize,
-          translation.meta.last_row_id
+          translationId
         )
         .run()
     );
