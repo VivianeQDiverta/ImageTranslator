@@ -5,7 +5,7 @@ export async function onRequestGet(context) {
 
   const translation = await db
     .prepare(
-      'SELECT translations.id FROM images, translations WHERE images.userId = ? AND images.id = translations.imageId AND translations.id = ?'
+      'SELECT data, targetLang FROM images, translations WHERE images.userId = ? AND images.id = translations.imageId AND translations.id = ?'
     )
     .bind(user.id, translationId)
     .first();
@@ -23,7 +23,12 @@ export async function onRequestGet(context) {
     .all();
 
   return new Response(
-    JSON.stringify({ success: true, annotations: annotations.results }),
+    JSON.stringify({
+      success: true,
+      annotations: annotations.results,
+      binaryImage: translation.data,
+      targetLang: translation.targetLang,
+    }),
     {
       headers: {
         'Content-Type': 'application/json',
