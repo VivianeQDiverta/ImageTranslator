@@ -3,7 +3,7 @@ export async function onRequestGet(context) {
   const db = context.env.DB;
   const translations = await db
     .prepare(
-      'SELECT translations.id, data, targetLang, date FROM images, translations WHERE images.userId = ? AND images.id = translations.imageId'
+      'SELECT translations.id, data, targetLang, date FROM images, translations WHERE images.userId = ? AND images.id = translations.imageId ORDER BY date DESC'
     )
     .bind(user.id)
     .all();
