@@ -1,4 +1,4 @@
-import html from '../translate/index.html';
+import html from '../../translate/index.html';
 
 export async function onRequestPost(context) {
   return new Response(html, {
