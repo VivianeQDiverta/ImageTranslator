@@ -9,6 +9,15 @@ export async function onRequestPost(context) {
   });
 }
 
+export async function onRequestGet(context) {
+  return new Response(html, {
+    headers: {
+      'Content-Type': 'text/html',
+      'Access-Control-Allow-Origin': '*',
+    },
+  });
+}
+
 export async function onRequestOptions(context) {
   return new Response(null, {
     status: 204,
