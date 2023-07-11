@@ -1,20 +1,24 @@
 export async function onRequestGet(context) {
+  const user = context.data.user;
   const db = context.env.DB;
-  const user = context.user;
   const translations = await db
-      .prepare('SELECT * FROM images, translations WHERE userId = ? AND images.id = translations.imageId')
-      .bind(user.id)
-      .all();
-  
-  return new Response(JSON.stringify({ translations }), {
+    .prepare(
+      'SELECT translations.id, data, targetLang, date FROM images, translations WHERE images.userId = ? AND images.id = translations.imageId'
+    )
+    .bind(user.id)
+    .all();
+  return new Response(
+    JSON.stringify({ success: true, translations: translations.results }),
+    {
       headers: {
-          'Content-Type': 'application/json',
+        'Content-Type': 'application/json',
       },
-  });
+    }
+  );
 }
 
 export async function onRequestPost(context) {
-  const user = context.user;
+  const user = context.data.user;
   const db = context.env.DB;
   const body = await context.request.json();
   const { annotations, binaryImage, targetLang } = body;

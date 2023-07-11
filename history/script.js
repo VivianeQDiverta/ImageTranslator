@@ -3,6 +3,7 @@ const getHistory = async () => {
   const response = await fetch('/api/history', {
     method: 'GET',
     headers: {
+      'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`,
     },
   });
@@ -12,8 +13,8 @@ const getHistory = async () => {
   translations.forEach((translation, i) => {
     tableBody.innerHTML += `
         <tr>
-            <th scope="row">${i + 1}</th>
-            <td>${translation.imageId}</td>
+            <th scope="row">${translation.id}</th>
+            <td><img src="data:image/gif;base64,${translation.data}" class="img-thumbnail"></td>
             <td>${translation.targetLang}</td>
             <td>${translation.date}</td>
         </tr>

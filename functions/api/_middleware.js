@@ -22,7 +22,7 @@ export async function onRequest(context) {
         status: 500,
       });
     }
-    context.user = user;
+    context.data.user = user;
     return await context.next();
   } catch (err) {
     return new Response(JSON.stringify({ error: 'Invalid token' }), {
