@@ -24,7 +24,13 @@ const observer = new MutationObserver(() => {
 
   // add click handler to download button
   downloadButton.addEventListener('click', downloadClickHandler);
-  saveButton.addEventListener('click', saveClickHandler);
+
+  if (!localStorage.getItem('token')) {
+    saveButton.style.display = 'none';
+    return;
+  } else {
+    saveButton.addEventListener('click', saveClickHandler);
+  }
 });
 
 observer.observe(body, { childList: true });
