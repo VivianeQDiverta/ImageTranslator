@@ -45,17 +45,25 @@ export async function onRequestPost(context) {
       )
       .bind(imageId, targetLang)
       .first('id');
+    const date = new Date().toISOString();
     if (translationId) {
       // delete old annotations
       await db
         .prepare('DELETE FROM annotations WHERE translationId = ?')
         .bind(translationId)
         .run();
+      // update translation
+      await db
+        .prepare('UPDATE translations SET date = ? WHERE id = ?')
+        .bind(date, translationId)
+        .run();
     } else {
       // insert new translation
       const res = await db
-        .prepare('INSERT INTO translations (imageId, targetLang) VALUES (?, ?)')
-        .bind(imageId, targetLang)
+        .prepare(
+          'INSERT INTO translations (imageId, targetLang, date) VALUES (?, ?, ?)'
+        )
+        .bind(imageId, targetLang, date)
         .run();
       translationId = res.meta.last_row_id;
     }
