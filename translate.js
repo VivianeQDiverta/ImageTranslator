@@ -8,6 +8,7 @@ const observer = new MutationObserver(() => {
 
   const showAnnotationsSwitch = document.getElementById('show-annotations');
   const downloadButton = document.getElementById('download-btn');
+  const saveButton = document.getElementById('save-btn');
 
   // Show or hide annotations depending on switch state
   showAnnotationsSwitch.addEventListener('change', (event) => {
@@ -23,6 +24,7 @@ const observer = new MutationObserver(() => {
 
   // add click handler to download button
   downloadButton.addEventListener('click', downloadClickHandler);
+  saveButton.addEventListener('click', saveClickHandler);
 });
 
 observer.observe(body, { childList: true });
@@ -58,7 +60,10 @@ const computeResultSize = (minWidth, minHeight) => {
 const downloadClickHandler = () => {
   const resultDiv = document.getElementById('result');
   // adjust result div size to fit all annotations
-  const { width, height } = computeResultSize(resultDiv.offsetWidth, resultDiv.offsetHeight);
+  const { width, height } = computeResultSize(
+    resultDiv.offsetWidth,
+    resultDiv.offsetHeight
+  );
   resultDiv.style.width = `${width}px`;
   resultDiv.style.height = `${height}px`;
   // convert result div to blob and download it using html-to-image
@@ -68,4 +73,32 @@ const downloadClickHandler = () => {
     });
     window.location = URL.createObjectURL(file);
   });
+};
+
+const saveClickHandler = async () => {
+  const res = await fetch('/translate/save', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
+    },
+    body: JSON.stringify({
+      annotations: Array.from(
+        document.querySelector('.annotationsContainer').childNodes
+      ).map((annotation) => ({
+        translated: annotation.innerText.replace('<br>', '\n'),
+        x: annotation.style.left.replace('px', ''),
+        y: annotation.style.top.replace('px', ''),
+        fontSize: annotation.style.fontSize.replace('px', ''),
+      })),
+      binaryImage: document.getElementById('image').src.split(',')[1],
+      targetLang: 'en',
+    }),
+  });
+  const data = await res.json();
+  if (data.success) {
+    alert('Saved successfully');
+    return;
+  }
+  alert(data.error);
 };
