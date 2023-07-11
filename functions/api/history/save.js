@@ -1,4 +1,4 @@
-import jwt from '../libs/jwt.js';
+import jwt from '../../libs/jwt.js';
 
 const verifyUser = async (token, secret, db) => {
   try {
