@@ -82,7 +82,7 @@ const downloadClickHandler = () => {
 };
 
 const saveClickHandler = async () => {
-  const res = await fetch('/api/history/save', {
+  const res = await fetch('/api/history', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
