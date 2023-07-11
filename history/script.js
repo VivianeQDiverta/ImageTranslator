@@ -1,15 +1,5 @@
-const getAnnotations = async (translationId) => {
-  const token = localStorage.getItem('token');
-  const response = await fetch(`/api/translations/${translationId}`, {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`,
-    },
-  });
-
-  const { annotations } = await response.json();
-  console.log(annotations);
+const getTranslation = async (translationId) => {
+  window.location.href = `/?translationId=${translationId}`;
 };
 
 const getHistory = async () => {
@@ -36,7 +26,7 @@ const getHistory = async () => {
         <td>${translation.targetLang}</td>
         <td>${new Date(translation.date).toLocaleString()}</td>
         `;
-    tr.addEventListener('click', () => getAnnotations(translation.id));
+    tr.addEventListener('click', () => getTranslation(translation.id));
     tableBody.appendChild(tr);
   });
 };

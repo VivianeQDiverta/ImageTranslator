@@ -26,7 +26,7 @@ translateBtn.addEventListener('click', async (e) => {
         resolve(reader.result);
       };
     }
-  
+
     // convert images to jpg if svg or png
     const imgObj = new Image();
     imgObj.src = URL.createObjectURL(file);
@@ -70,4 +70,35 @@ translateBtn.addEventListener('click', async (e) => {
   const doc = parser.parseFromString(text, 'text/html');
   document.querySelector('body').innerHTML =
     doc.querySelector('body').innerHTML;
+});
+
+const displayTranslation = async (translationId, token) => {
+  const res = await fetch(`/translate?translationId=${translationId}`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'text/html',
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  // parse response
+  const text = await res.text();
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(text, 'text/html');
+  document.querySelector('body').innerHTML =
+    doc.querySelector('body').innerHTML;
+};
+
+// handle translation display on page load if requested
+document.addEventListener('DOMContentLoaded', () => {
+  const token = localStorage.getItem('token');
+  const translationId = new URLSearchParams(window.location.search).get(
+    'translationId'
+  );
+  if (translationId && !token) {
+    window.location.href = '/signin';
+  }
+  if (translationId) {
+    displayTranslation(translationId, token);
+  }
 });
