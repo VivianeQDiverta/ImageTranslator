@@ -23,6 +23,7 @@ class SignedInNav extends HTMLElement {
     this.innerHTML = `
       <nav class="nav justify-content-center">
         <a id="home" class="nav-link" href="/">Image Translator</a>
+        <a id="history" class="nav-link" href="/history">History</a>
         <a id="signout" class="nav-link" href="/">Sign out</a>
       </nav>
     `;
