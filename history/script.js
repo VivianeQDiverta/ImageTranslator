@@ -14,9 +14,13 @@ const getHistory = async () => {
     tableBody.innerHTML += `
         <tr>
             <th scope="row">${translation.id}</th>
-            <td><img src="data:image/gif;base64,${translation.data}" class="img-thumbnail"></td>
+            <td>
+                <img src="data:image/gif;base64,${
+                  translation.data
+                }" class="img-thumbnail">
+            </td>
             <td>${translation.targetLang}</td>
-            <td>${translation.date}</td>
+            <td>${new Date(translation.date).toLocaleString()}</td>
         </tr>
         `;
   });
