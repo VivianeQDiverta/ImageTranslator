@@ -92,7 +92,7 @@ const saveClickHandler = async () => {
         fontSize: annotation.style.fontSize.replace('px', ''),
       })),
       binaryImage: document.getElementById('image').src.split(',')[1],
-      targetLang: 'en',
+      targetLang: document.getElementById('target-lang').innerText,
     }),
   });
   const data = await res.json();
