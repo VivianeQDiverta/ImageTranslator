@@ -2,6 +2,20 @@ const getTranslation = async (translationId) => {
   window.location.href = `/?translationId=${translationId}`;
 };
 
+const deleteTranslation = async (translationId) => {
+  const token = localStorage.getItem('token');
+  const response = await fetch(`/api/translations/${translationId}`, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  if (response.ok) {
+    window.location.reload();
+  }
+};
+
 const getHistory = async () => {
   const token = localStorage.getItem('token');
   const response = await fetch('/api/history', {
@@ -25,8 +39,10 @@ const getHistory = async () => {
         </td>
         <td>${translation.targetLang}</td>
         <td>${new Date(translation.date).toLocaleString()}</td>
+        <td><button class="btn"><i class="bi bi-trash-fill"></i></button></td>
         `;
     tr.addEventListener('click', () => getTranslation(translation.id));
+    tr.querySelector('button').addEventListener('click', () => deleteTranslation(translation.id));
     tableBody.appendChild(tr);
   });
 };
