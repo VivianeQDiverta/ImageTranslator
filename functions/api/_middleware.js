@@ -18,8 +18,6 @@ export async function onRequest(context) {
     const token = decodeURIComponent(
       context.request.headers.get('Authorization')
     ).split(' ')[1];
-    console.log(token);
-    console.log(context.request.headers.get('Authorization'));
     const user = await verifyUser(token, context.env.SECRET, context.env.DB);
     if (!user) {
       return new Response(JSON.stringify({ error: 'Invalid token' }), {
