@@ -68,8 +68,12 @@ translateBtn.addEventListener('click', async (e) => {
   const text = await res.text();
   const parser = new DOMParser();
   const doc = parser.parseFromString(text, 'text/html');
-  document.querySelector('body').innerHTML =
-    doc.querySelector('body').innerHTML;
+  document
+    .querySelector('body')
+    .replaceChild(
+      doc.querySelector('#main-container'),
+      document.querySelector('#main-container')
+    );
 });
 
 const displayTranslation = async (translationId, token) => {
@@ -85,8 +89,12 @@ const displayTranslation = async (translationId, token) => {
   const text = await res.text();
   const parser = new DOMParser();
   const doc = parser.parseFromString(text, 'text/html');
-  document.querySelector('body').innerHTML =
-    doc.querySelector('body').innerHTML;
+  document
+    .querySelector('body')
+    .replaceChild(
+      doc.querySelector('#main-container'),
+      document.querySelector('#main-container')
+    );
 };
 
 // handle translation display on page load if requested
