@@ -71,7 +71,7 @@ export async function onRequestDelete(context) {
   if (associatedTranslations.results.length === 1) {
     await db
       .prepare('DELETE FROM images WHERE id = ?')
-      .bind(translationId)
+      .bind(translation.imageId)
       .run();
   }
 
