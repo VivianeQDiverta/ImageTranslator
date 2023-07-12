@@ -29,20 +29,28 @@ const getHistory = async () => {
   const { translations } = await response.json();
   const tableBody = document.querySelector('#history-container > tbody');
   translations.forEach((translation) => {
+    const { id, data, targetLang, date } = translation;
     const tr = document.createElement('tr');
     tr.innerHTML = `
-        <th scope="row">${translation.id}</th>
+        <th scope="row">${id}</th>
         <td>
-            <img src="data:image/gif;base64,${
-              translation.data
-            }" class="img-thumbnail">
+            <img src="data:image/gif;base64,${data}" class="img-thumbnail">
         </td>
-        <td>${translation.targetLang}</td>
-        <td>${new Date(translation.date).toLocaleString()}</td>
-        <td><button class="btn"><i class="bi bi-trash-fill"></i></button></td>
+        <td>${targetLang}</td>
+        <td>${new Date(date).toLocaleString()}</td>
+        <td>
+            <div class="d-flex flex-column">
+              <button id="show-${id}" class="btn"><i class="bi bi-arrow-right"></i></button>
+              <button id="delete-${id}" class="btn delete"><i class="bi bi-trash-fill"></i></button>
+            </div>
+        </td>
         `;
-    tr.addEventListener('click', () => getTranslation(translation.id));
-    tr.querySelector('button').addEventListener('click', () => deleteTranslation(translation.id));
+    tr.querySelector(`#show-${id}`).addEventListener('click', () =>
+      getTranslation(id)
+    );
+    tr.querySelector(`#delete-${id}`).addEventListener('click', () =>
+      deleteTranslation(id)
+    );
     tableBody.appendChild(tr);
   });
 };
