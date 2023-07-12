@@ -40,8 +40,8 @@ const getHistory = async () => {
         <td>${new Date(date).toLocaleString()}</td>
         <td>
             <div class="d-flex flex-column">
-              <button id="show-${id}" class="btn"><i class="bi bi-arrow-right"></i></button>
-              <button id="delete-${id}" class="btn delete"><i class="bi bi-trash-fill"></i></button>
+              <button id="show-${id}" class="btn" title="Show"><i class="bi bi-arrow-right"></i></button>
+              <button id="delete-${id}" class="btn delete" title="Delete"><i class="bi bi-trash-fill"></i></button>
             </div>
         </td>
         `;

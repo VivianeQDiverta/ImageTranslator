@@ -95,10 +95,11 @@ document.addEventListener('DOMContentLoaded', () => {
   const translationId = new URLSearchParams(window.location.search).get(
     'translationId'
   );
-  if (translationId && !token) {
-    window.location.href = '/signin';
-  }
   if (translationId) {
-    displayTranslation(translationId, token);
+    if (!token) {
+      window.location.href = '/signin';
+    } else {
+      displayTranslation(translationId, token);
+    }
   }
 });
